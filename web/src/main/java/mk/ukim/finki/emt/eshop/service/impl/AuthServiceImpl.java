@@ -5,6 +5,7 @@ import mk.ukim.finki.emt.eshop.model.exceptions.InvalidArgumentsException;
 import mk.ukim.finki.emt.eshop.model.exceptions.InvalidUserCredentialsException;
 import mk.ukim.finki.emt.eshop.repository.UserRepository;
 import mk.ukim.finki.emt.eshop.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
