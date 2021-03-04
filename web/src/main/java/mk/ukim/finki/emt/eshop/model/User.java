@@ -35,9 +35,6 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @ManyToOne
-    private Discount discount;
-
     // default:
     // to-one -> FetchType.EAGER
     // to-many -> FetchType.LAZY
