@@ -5,20 +5,34 @@ import mk.ukim.finki.emt.eshop.model.enumerations.Role;
 import mk.ukim.finki.emt.eshop.model.exceptions.UserNotFoundException;
 import mk.ukim.finki.emt.eshop.model.projections.UserProjection;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Before
+    public void init() {
+        if (userRepository.count() == 0) {
+            User user = new User();
+            user.setUsername("user");
+            user.setName("Name");
+
+            userRepository.save(user);
+        }
+    }
 
     @Test
     public void testFindAll() {
