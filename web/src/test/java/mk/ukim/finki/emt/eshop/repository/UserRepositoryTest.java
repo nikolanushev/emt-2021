@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -28,9 +29,17 @@ public class UserRepositoryTest {
         if (userRepository.count() == 0) {
             User user = new User();
             user.setUsername("user");
-            user.setName("Name");
+            user.setName("user");
+            user.setSurname("user");
+            user.setRole(Role.ROLE_USER);
+
+            User user1 = new User();
+            user1.setUsername("user1");
+            user1.setName("Name1");
+
 
             userRepository.save(user);
+            userRepository.save(user1);
         }
     }
 
@@ -60,7 +69,7 @@ public class UserRepositoryTest {
         Assert.assertEquals("user", userProjection.getSurname());
     }
 
-    @Test
+    @Test(expected = ObjectOptimisticLockingFailureException.class)
     public void testOptimisticLock() {
         User user1 = this.userRepository.findByUsername("user")
                 .orElseThrow(() -> new UserNotFoundException("user"));

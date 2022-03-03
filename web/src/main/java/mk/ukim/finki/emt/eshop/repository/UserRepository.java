@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     List<User> fetchAll();
 
     @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
-            attributePaths = {"carts", "discount"})
+            attributePaths = {"carts"})
     @Query("select u from User u")
     List<User> loadAll();
 
