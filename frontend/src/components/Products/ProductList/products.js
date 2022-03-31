@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPaginate from 'react-paginate'
 import ProductTerm from '../ProductTerm/productTerm';
 import {Link} from 'react-router-dom';
+import eshopRepository from "../../../repository/eshopRepository";
 
 class Products extends React.Component {
 
@@ -19,6 +20,7 @@ class Products extends React.Component {
         const nextPageOffset = offset + this.state.size;
         const pageCount = Math.ceil(this.props.products.length / this.state.size);
         const products = this.getProductsPage(offset, nextPageOffset);
+        console.log(products, pageCount)
 
         return (
             <div className={"container mm-4 mt-5"}>
@@ -64,12 +66,14 @@ class Products extends React.Component {
 
     handlePageClick = (data) => {
         let selected = data.selected;
+        console.log(selected)
         this.setState({
             page: selected
         })
     }
 
     getProductsPage = (offset, nextPageOffset) => {
+        console.log(offset, nextPageOffset)
         return this.props.products.map((term, index) => {
             return (
                 <ProductTerm term={term} onDelete={this.props.onDelete} onEdit={this.props.onEdit}/>

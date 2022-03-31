@@ -6,16 +6,15 @@ import mk.ukim.finki.emt.eshop.config.filters.JwtAuthenticationFilter;
 import mk.ukim.finki.emt.eshop.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Order(200)
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Profile("jwt")
 @AllArgsConstructor
 public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
