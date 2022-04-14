@@ -2,6 +2,14 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 const header = (props) => {
+    let authenticate
+    if (localStorage.getItem("JWT")) {
+        authenticate = (<button className="btn btn-outline-info my-2 my-sm-0"
+                                onClick={() => localStorage.removeItem("JWT")}>Logout</button>);
+    } else {
+        authenticate = (<Link className="btn btn-outline-info my-2 my-sm-0" to={"/login"}>Login</Link>);
+    }
+
     return (
         <header>
             <nav className="navbar navbar-expand-md navbar-dark navbar-fixed bg-dark">
@@ -23,7 +31,7 @@ const header = (props) => {
                         </li>
                     </ul>
                     <form className="form-inline mt-2 mt-md-0 ml-3">
-                        <Link className="btn btn-outline-info my-2 my-sm-0" to={"/login"}>Login</Link>
+                        {authenticate}
                     </form>
                 </div>
             </nav>

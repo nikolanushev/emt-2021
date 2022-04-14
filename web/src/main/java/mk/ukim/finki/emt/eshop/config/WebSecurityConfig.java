@@ -1,5 +1,9 @@
 package mk.ukim.finki.emt.eshop.config;
 
+import mk.ukim.finki.emt.eshop.config.filters.JWTAuthorizationFilter;
+import mk.ukim.finki.emt.eshop.config.filters.JwtAuthenticationFilter;
+import mk.ukim.finki.emt.eshop.service.UserService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,11 +21,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
+    private final UserService userService;
 
     public WebSecurityConfig(PasswordEncoder passwordEncoder,
-                             CustomUsernamePasswordAuthenticationProvider authenticationProvider) {
+                             CustomUsernamePasswordAuthenticationProvider authenticationProvider, UserService userService) {
         this.passwordEncoder = passwordEncoder;
         this.authenticationProvider = authenticationProvider;
+        this.userService = userService;
     }
 
     @Override
@@ -29,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/assets/**", "/register", "/products", "/api/**").permitAll()
+                .antMatchers("/", "/home", "/assets/**", "/register", "/products", "/api/login","/api/products", "/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
@@ -45,7 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")
                     .logoutSuccessUrl("/login")
+
                 .and()
+                .addFilter(this.authenticationFilter())
+                .addFilter(this.authorizationFilter())
                 .exceptionHandling().accessDeniedPage("/access_denied");
     }
 
@@ -61,4 +70,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authorities("ROLE_ADMIN");
         auth.authenticationProvider(authenticationProvider);
     }
+
+    @Bean
+    public JWTAuthorizationFilter authorizationFilter() throws Exception {
+        return new JWTAuthorizationFilter(authenticationManager(), userService);
+    }
+
+    @Bean
+    public JwtAuthenticationFilter authenticationFilter() throws Exception {
+        return new JwtAuthenticationFilter(authenticationManager(), userService, passwordEncoder);
+    }
+
+
+
 }

@@ -7,7 +7,6 @@ import mk.ukim.finki.emt.eshop.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,8 +30,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(),userService,passwordEncoder))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager(),userService))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService, passwordEncoder))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), userService))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
